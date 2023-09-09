@@ -1,0 +1,5 @@
+.navHeader ul {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+}
