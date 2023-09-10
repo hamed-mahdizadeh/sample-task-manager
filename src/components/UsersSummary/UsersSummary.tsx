@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import classes from './UsersSummary.module.css';
 import { useSearchParams } from 'react-router-dom';
 import { UserInfoSummary, UsersSummaryResponseData } from '../../types/user';
+import UsersTable from './UsersTable/UsersTable';
+import { useTheme } from 'styled-components';
 
 export const loader = async (page: string): Promise<UsersSummaryResponseData | undefined> => {
     const response = await fetch(`/users/page/${page}`);
@@ -18,6 +19,33 @@ export const UsersSummary = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     let currentPage = searchParams.get('page') ?? '1';
+
+    const theme = useTheme();
+
+    console.log(theme);
+
+    const loadPreviousPage = () => {
+        let page = 0;
+        if (currentPage) {
+            page = +currentPage;
+        }
+        if (page > 0) {
+            page -= 1;
+        }
+        setSearchParams({ page: `${page}` });
+    }
+
+    const loadNextPage = () => {
+        let page = 0;
+        if (currentPage) {
+            page = +currentPage;
+        }
+        if (page < totalPages) {
+            page += 1;
+        }
+        setSearchParams({ page: `${page}` });
+    }
+
 
     useEffect(() => {
         const loadPage = async () => {
@@ -37,8 +65,14 @@ export const UsersSummary = () => {
 
 
     return (
-        <div className={classes.UsersSummary}>
-            <h3>User Summary Place Holder</h3>
-        </div>
+        <UsersTable
+            currentPageData={users}
+            currenPage={currentPage ? +currentPage : 1}
+            totalPage={totalPages}
+            sortItems={(cl) => { }}
+            loadPage={(page) => setSearchParams({ page: `${page}` })}
+            loadPrevPage={loadPreviousPage}
+            loadNextPage={loadNextPage}
+        />
     );
 };
