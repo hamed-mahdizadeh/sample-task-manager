@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter, redirect } from 'react-router-dom';
-import { Layout } from './components/ui/Layout/Layout';
+import Layout from './components/ui/Layout';
+
 
 
 
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
       {
         path: '/home',
         lazy: async () => {
-          const { Home } = await import('./components/Home/Home')
+          const { Home } = await import('./pages/Home')
           return {
             element: <Home />
           }
@@ -28,16 +29,16 @@ const router = createBrowserRouter([
       {
         path: '/users-summary',
         lazy: async () => {
-          const  { UsersSummary } = await import('./components/UsersSummary/UsersSummary');
+          const  { UsersSummary } = await import('./pages/UsersSummary');
           return {
             element: <UsersSummary />
           }
         }
       },
       {
-        path: '/user-details',
+        path: '/user-details/:userId',
         lazy: async () => {
-          const  { UserDetails } = await import('./components/UserDetails/UserDetails');
+          const  { UserDetails } = await import('./pages/UserDetails');
           return {
             element: <UserDetails />
           }

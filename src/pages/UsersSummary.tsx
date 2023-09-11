@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
-import { UserInfoSummary, UsersSummaryResponseData } from '../../types/user';
-import UsersTable from './UsersTable/UsersTable';
+import { UserInfoSummary, UsersSummaryResponseData } from '../types/user';
+import UsersTable from '../components/UsersTable';
 import { useTheme } from 'styled-components';
 
 export const loader = async (page: string): Promise<UsersSummaryResponseData | undefined> => {
@@ -19,10 +19,6 @@ export const UsersSummary = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     let currentPage = searchParams.get('page') ?? '1';
-
-    const theme = useTheme();
-
-    console.log(theme);
 
     const loadPreviousPage = () => {
         let page = 0;

@@ -1,5 +1,13 @@
 import styled from "styled-components";
-import { Theme } from "../../../types/ui";
+import { Theme } from "../../types/ui";
+import { NavLink } from "react-router-dom";
+
+export const StyledNavLink = styled(NavLink)`
+    color: ${props => props.theme.main};
+    &:visited {
+        color: ${props => props.theme.main};
+    }
+`
 
 export const StyledContainerDiv = styled.div<{ theme: Theme }>`
     text-align: center;

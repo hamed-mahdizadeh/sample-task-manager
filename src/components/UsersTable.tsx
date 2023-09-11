@@ -1,7 +1,8 @@
 import { useTheme } from 'styled-components';
-import { UserInfoSummary } from '../../../types/user';
-import { StyledContainerDiv, StyledPaginationContainerDiv, StyledTableHeaderRowDiv, StyledTableRowDiv } from '../../ui/Containers/Table';
-import { StyledPaginationButton } from '../../ui/Controls/Buttons';
+import { UserInfoSummary } from '../types/user';
+import { StyledContainerDiv, StyledNavLink, StyledPaginationContainerDiv, StyledTableHeaderRowDiv, StyledTableRowDiv } from './ui/Table';
+import { StyledPaginationButton } from './ui/StyledElements/Buttons';
+import { NavLink } from 'react-router-dom';
 
 
 
@@ -27,7 +28,11 @@ const UsersTable = (
 
     const rows = currentPageData.map((user) =>
         <StyledTableRowDiv key={user.id}>
-            <div>{user.firstName}</div>
+            <div>
+                <StyledNavLink to={`/user-details/${user.id}`}>
+                    {user.firstName}
+                </StyledNavLink>
+            </div>
             <div>{user.email}</div>
             <div>{user.age}</div>
             {/* TODO: Replace Place holder with appropriate Actions */}
