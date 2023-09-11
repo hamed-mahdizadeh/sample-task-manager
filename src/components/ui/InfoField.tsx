@@ -9,7 +9,7 @@ export const InfoField = ({ name, value }: { name: string, value: string }) => {
     border: ${props => props.theme.border};
     background-color: ${props => props.theme.secondaryBackground};
     border-radius: 5px;
-    border: 1px solid ${props => props.theme.border}`
+    border: 1px solid ${props => props.theme.border}`;
 
     const StyledFieldContainer = styled.div<{ theme: Theme }>`
     flex: 1;

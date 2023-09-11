@@ -13,7 +13,10 @@ type RequestType = RestRequest<never, any> & {
 };
 
 export const UsersHandler = rest.get('/users/page/:pageNumber', async (req, res, ctx) => {
-    const { order, searchTerm, sortBy } = (req as RequestType)?.query ?? {};
+
+    const searchTerm = req.url.searchParams.get('searchTerm');
+    const order = req.url.searchParams.get('order');
+    const sortBy = req.url.searchParams.get('sortBy');
 
     const  { pageNumber } = req.params;
     
@@ -21,8 +24,7 @@ export const UsersHandler = rest.get('/users/page/:pageNumber', async (req, res,
     let users = [...dummyUsersInfoSummaries];
   
     if (searchTerm && (searchTerm as string).trim() !== '') {
-      users = users.filter(user => user.firstName.toLowerCase().includes((searchTerm as string).toLowerCase()))
-  
+      users = users.filter(user => user.firstName.toLowerCase().includes((searchTerm as string).toLowerCase()));
     }
     if (sortBy) {
       const orderType = order ?? 'asc';
@@ -66,8 +68,6 @@ export const userDetailsHandler = rest.get('/users/details/:userId', async (req,
   
 
   const user = dummyUsersInfoDetails.find(user => user.id === userId);
-
-  console.log({userId, dummyUsersInfoDetails});
 
   if(user) {
     return res(

@@ -14,12 +14,31 @@ const StyledLayoutContainer = styled.div<{theme: Theme}>`
     margin: 0;
 `
 
+const StyledSearchPlaceHolderDiv = styled.div`
+    display: flex;
+    vertical-align: middle;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: center;
+`
+
+const StyledHeaderContainerDiv = styled.div`
+    display: flex;
+
+    @media (max-width: 767px) {
+        display: block;
+    }
+`
+
 const Layout = () => {
 
     return (
         <ThemeProvider theme={dark}>
             <StyledLayoutContainer>
-                <Navbar/>
+                <StyledHeaderContainerDiv>
+                    <Navbar/>
+                    <StyledSearchPlaceHolderDiv id="headerPlaceHolder"></StyledSearchPlaceHolderDiv>
+                </StyledHeaderContainerDiv>
                 <Outlet />
             </StyledLayoutContainer>
         </ThemeProvider>
