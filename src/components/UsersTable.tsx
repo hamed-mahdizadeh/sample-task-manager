@@ -1,8 +1,6 @@
-import { useTheme } from 'styled-components';
 import { UserInfoSummary } from '../types/user';
 import { StyledContainerDiv, StyledNavLink, StyledPaginationContainerDiv, StyledTableHeaderRowDiv, StyledTableRowDiv } from './ui/Table';
 import { StyledPaginationButton } from './ui/StyledElements/Buttons';
-import { NavLink } from 'react-router-dom';
 
 
 

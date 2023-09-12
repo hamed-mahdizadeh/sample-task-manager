@@ -74,7 +74,7 @@ export const UsersSummary = () => {
 
     }, [currentPage, searchTerm]);
 
-    const searchBarChangeHandler = async (searchTerm: string) => {
+    const handleSearchBarChange = async (searchTerm: string) => {
         const usersResponseData = await loader('1', searchTerm);
         if (usersResponseData) {
             return usersResponseData.users;
@@ -82,7 +82,7 @@ export const UsersSummary = () => {
         return [];
     }
 
-    const searchItemSelectHandler = (user: UserInfoSummary) => {
+    const handleSearchItemSelect = (user: UserInfoSummary) => {
         navigate(`/user-details/${user.id}`);
     }
 
@@ -97,9 +97,9 @@ export const UsersSummary = () => {
         <>
             <SearchBarPortal
                 debounce={500}
-                onChange={searchBarChangeHandler}
+                onChange={handleSearchBarChange}
                 onSearchText={handleSearchText}
-                onItemSelect={searchItemSelectHandler} />,
+                onItemSelect={handleSearchItemSelect} />,
             <UsersTable
                 currentPageData={users}
                 currenPage={currentPage ? +currentPage : 1}

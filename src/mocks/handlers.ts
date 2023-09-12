@@ -1,18 +1,21 @@
-import { RestRequest, rest } from 'msw';
+import {  rest } from 'msw';
 import dummyUsersInfoSummaries from './dummy-users-summary.json';
 import dummyUsersInfoDetails from './dummy-users-details.json';
+import dummyTasks from './dummy-tasks.json';
+import { Task } from '../types/task';
+import { UserInfoSummary, UserInfoDetails } from '../types/user';
+import { faker } from '@faker-js/faker';
+
 
 const pageSize = 10;
 
-type RequestType = RestRequest<never, any> & {
-  query: {
-    order?: 'asc' | 'desc',
-    searchTerm?: string,
-    sortBy?: 'age' | 'firstName'
-  }
-};
+const db: {usersSummary: UserInfoSummary[], usersDetails: UserInfoDetails[], tasks: Task[]}  = {
+    usersSummary: [...(dummyUsersInfoSummaries as UserInfoSummary[])],
+    usersDetails: [...(dummyUsersInfoDetails as UserInfoDetails[])],
+    tasks: [...(dummyTasks as Task[])],
+}
 
-export const UsersHandler = rest.get('/users/page/:pageNumber', async (req, res, ctx) => {
+export const usersHandler = rest.get('/users/page/:pageNumber', async (req, res, ctx) => {
 
     const searchTerm = req.url.searchParams.get('searchTerm');
     const order = req.url.searchParams.get('order');
@@ -21,7 +24,7 @@ export const UsersHandler = rest.get('/users/page/:pageNumber', async (req, res,
     const  { pageNumber } = req.params;
     
   
-    let users = [...dummyUsersInfoSummaries];
+    let users = [...db.usersSummary];
   
     if (searchTerm && (searchTerm as string).trim() !== '') {
       users = users.filter(user => user.firstName.toLowerCase().includes((searchTerm as string).toLowerCase()));
@@ -67,7 +70,7 @@ export const userDetailsHandler = rest.get('/users/details/:userId', async (req,
 
   
 
-  const user = dummyUsersInfoDetails.find(user => user.id === userId);
+  const user = db.usersDetails.find(user => user.id === userId);
 
   if(user) {
     return res(
@@ -83,10 +86,56 @@ export const userDetailsHandler = rest.get('/users/details/:userId', async (req,
   }
 });
 
+export const tasksListHandler = rest.get('/tasks', async (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        tasks: db.tasks
+      }),
+    );
+});
+
+export const tasksAddHandler = rest.put('/tasks', async (req, res, ctx) => {
+  const task = await req.json<Task>();
+  if(task.id) {
+    const currentTaskIndex = db.tasks.findIndex(current => current.id === task.id);
+    if(currentTaskIndex > -1) {
+      db.tasks[currentTaskIndex] = {
+        ...task
+      }
+    } else {
+      return res(
+        ctx.status(404), 
+      );
+    }
+  } else {
+    db.tasks.push({
+      ...task,
+      id: faker.string.uuid()
+    });
+  };
+  return res(
+    ctx.status(200), 
+  );
+});
+
+
+export const tasksDeleteHandler = rest.delete('/tasks/:taskId', async (req, res, ctx) => {
+  const  { taskId } = req.params;
+ 
+  db.tasks = db.tasks.filter(task => task.id !== taskId);
+  return res(
+    ctx.status(200), 
+  );
+});
+
 
 
 
 export const handlers = [
-  UsersHandler,
-  userDetailsHandler
+  usersHandler,
+  userDetailsHandler,
+  tasksListHandler,
+  tasksAddHandler,
+  tasksDeleteHandler
 ]

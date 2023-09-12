@@ -7,12 +7,12 @@ const StyledLi = styled.li`
 
 
 export const SearchResultItem = ({user, onItemSelect} : {user: UserInfoSummary, onItemSelect: (user: UserInfoSummary) => any}) => {
-    const itemSelectHandler = () => {
+    const handleItemSelect = () => {
         onItemSelect(user);
     } 
     
     return (
-        <StyledLi onClick={itemSelectHandler}>
+        <StyledLi onClick={handleItemSelect}>
             { user.firstName }
         </StyledLi>
     );

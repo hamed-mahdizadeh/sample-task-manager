@@ -21,6 +21,12 @@ const StyledSearchBarContainerDiv = styled.div`
     min-width: 8rem;
 `;
 
+const StyledSearchIcon = styled(SearchIcon)`
+cursor: pointer;
+color: #555;
+padding: .5rem;
+`;
+
 export const SearchBar: SearchBarType = ({ onChange, onItemSelect, onSearchText, debounce = 500 }) => {
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -36,12 +42,12 @@ export const SearchBar: SearchBarType = ({ onChange, onItemSelect, onSearchText,
         return () => clearTimeout(timeoutIdentifier);
     }, [searchTerm])
 
-    const changeSearchInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleInputSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     }
 
     const handleKeyDown = (event: React.KeyboardEvent) => {
-        if(event.key === 'Enter') {
+        if (event.key === 'Enter') {
             onSearchText(searchTerm);
         }
     }
@@ -49,12 +55,6 @@ export const SearchBar: SearchBarType = ({ onChange, onItemSelect, onSearchText,
     const handleSearchClick = () => {
         onSearchText(searchTerm);
     }
-
-    const StyledSearchIcon = styled(SearchIcon)`
-        cursor: pointer;
-        color: #555;
-        padding: .5rem;
-    `
 
     return (
         <StyledSearchBarContainerDiv>
@@ -67,9 +67,9 @@ export const SearchBar: SearchBarType = ({ onChange, onItemSelect, onSearchText,
                 clearOnBlur={false}
                 renderInput={
                     (params) =>
-                        <div style={{display: 'flex'}}>
+                        <div style={{ display: 'flex' }}>
                             <TextField
-                                onChange={changeSearchInputHandler}
+                                onChange={handleInputSearchChange}
                                 onKeyDown={handleKeyDown}
                                 {...params}
                                 placeholder="Search"

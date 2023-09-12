@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { UserInfoDetails, UserInfoSummary } from "../types/user";
+import { Task } from "../types/task";
 
 const listLength = 200;
 
