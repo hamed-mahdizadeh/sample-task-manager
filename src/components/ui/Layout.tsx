@@ -24,13 +24,20 @@ const StyledSearchPlaceHolderDiv = styled.div`
     align-items: center;
     flex-grow: 1;
     justify-content: center;
+    @media (max-width: 767px) {
+        width: fill-available;
+        width: -moz-available;
+        width: -webkit-fill-available;
+        order: 3;
+    }
 `
 
 const StyledHeaderContainerDiv = styled.div`
     display: flex;
 
     @media (max-width: 767px) {
-        display: block;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
     }
 `;
 
@@ -41,6 +48,9 @@ const StyledDarkModeIcon = styled(DarkModeIcon)<{theme: Theme}>`
     cursor: pointer;
     &.dark {
         color: #ada610 !important;
+    }
+    @media (max-width: 767px) {
+        order: 2;
     }
 `
 

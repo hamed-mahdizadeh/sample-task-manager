@@ -30,11 +30,19 @@ const StyledNavLink = styled(NavLink) <{ theme: Theme }>`
    };
   }`;
 
+  const StyledNav = styled.nav`
+    @media (max-width: 767px) {
+        min-width: 80%;
+        flex-grow: 1;
+        order: 1;
+    }
+  `
+
 
 export const Navbar = () => {
 
     return (
-        <nav>
+        <StyledNav>
             <StyledNavbarUl>
                 <li>
                     <StyledNavLink to="/home" title='Home' >
@@ -47,6 +55,6 @@ export const Navbar = () => {
                     </StyledNavLink>
                 </li>
             </StyledNavbarUl>
-        </nav>
+        </StyledNav>
     );
 };
