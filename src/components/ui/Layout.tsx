@@ -1,13 +1,16 @@
 import React from 'react';
 
 import { Outlet } from 'react-router-dom';
-import { Navbar }  from './Navbar';
+import { Navbar } from './Navbar';
 import styled, { ThemeProvider } from 'styled-components';
 import dark from '../../theme/dark';
 import light from '../../theme/light';
 import { Theme } from '../../types/ui';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import { useAppDispatch, useAppSelector } from '../../hooks/useStore';
+import { uiActions } from '../../store/ui-slice';
 
-const StyledLayoutContainer = styled.div<{theme: Theme}>`
+const StyledLayoutContainer = styled.div<{ theme: Theme }>`
     background-color: ${props => props.theme.tertiaryBackground};
     color: ${props => props.theme.main};
     min-height: 100vh;
@@ -29,16 +32,43 @@ const StyledHeaderContainerDiv = styled.div`
     @media (max-width: 767px) {
         display: block;
     }
+`;
+
+const StyledDarkModeIcon = styled(DarkModeIcon)<{theme: Theme}>`
+    color: ${props => props.theme.main};
+    margin: 1.5rem;
+    font-size: 36;
+    cursor: pointer;
+    &.dark {
+        color: #ada610 !important;
+    }
 `
 
 const Layout = () => {
 
+    const themeName = useAppSelector(state => state.ui.theme);
+    const currentTheme = themeName === 'dark' ? dark : light;
+    const dispatch = useAppDispatch();
+
+    const handleDarkModeClick = () => {
+
+        const newTheme = themeName === 'dark' ? 'light' : 'dark';
+
+        dispatch(uiActions.changeTheme(newTheme))
+    }
+
+
+
     return (
-        <ThemeProvider theme={dark}>
+        <ThemeProvider theme={currentTheme}>
             <StyledLayoutContainer>
                 <StyledHeaderContainerDiv>
-                    <Navbar/>
+                    <Navbar />
                     <StyledSearchPlaceHolderDiv id="headerPlaceHolder"></StyledSearchPlaceHolderDiv>
+                    <StyledDarkModeIcon
+                     className={themeName} role='button'
+                     onClick={handleDarkModeClick}
+                    />
                 </StyledHeaderContainerDiv>
                 <Outlet />
             </StyledLayoutContainer>

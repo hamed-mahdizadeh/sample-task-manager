@@ -9,5 +9,6 @@ export const StyledAvatarImg = styled.img`
 
     @media (max-width: 767px) {
         width: 3rem;
+        height: 3rem;
     }
 `
