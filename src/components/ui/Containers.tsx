@@ -69,10 +69,10 @@ export const StyledColumnDiv = styled.div<{ theme: Theme, basis: string, maxwidt
     margin-bottom: 5rem;
     border: 1px solid ${props => props.theme.border};
     padding: 1rem;
-    gap: .5rem,
-    display: flex,
-    flexWrap: wrap,
-    overflowY: auto,
+    gap: .5rem;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
     @media (max-width: 767px) {
        max-width: unset;
     }
