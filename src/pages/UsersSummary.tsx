@@ -1,16 +1,37 @@
 import React, { useEffect, useState } from 'react';
 
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { UserInfoSummary, UsersSummaryResponseData } from '../types/user';
+import { Order, SortType, UserInfoSummary, UsersSummaryResponseData } from '../types/user';
 import UsersTable from '../components/UsersTable';
 import { SearchBarPortal } from '../components/SearchBarPortal';
+import { useAppDispatch } from '../hooks/useStore';
+import { uiActions } from '../store/ui-slice';
 
-export const loader = async (page: string, searchTerm?: string): Promise<UsersSummaryResponseData | undefined> => {
+export const loader = async (
+    page: string,
+    searchTerm: string,
+    order: Order,
+    sortBy: SortType
+): Promise<UsersSummaryResponseData | undefined> => {
     let url = `/users/page/${page}`;
+    let searchParams = [];
     if (searchTerm && searchTerm.trim() !== '') {
-        url += `?${new URLSearchParams({
+        searchParams.push(`${new URLSearchParams({
             searchTerm
-        })}`;
+        })}`);
+    }
+    if (order && order.trim() !== '') {
+        searchParams.push(`${new URLSearchParams({
+            order
+        })}`);
+    }
+    if (sortBy && sortBy.trim() !== '') {
+        searchParams.push(`${new URLSearchParams({
+            sortBy
+        })}`);
+    }
+    if (searchParams.length) {
+        url += `?${searchParams.join('&')}`;
     }
 
     const response = await fetch(url);
@@ -26,9 +47,12 @@ export const UsersSummary = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
 
     let currentPage = searchParams.get('page') ?? '1';
     let searchTerm = searchParams.get('searchTerm') ?? '';
+    let currentOrder = (searchParams.get('order') ?? '') as Order;
+    let currentSortBy = (searchParams.get('sortBy') ?? '') as SortType;
 
     const loadPreviousPage = () => {
         let page = 0;
@@ -40,6 +64,9 @@ export const UsersSummary = () => {
         }
         setSearchParams(searchParams => {
             searchParams.set("page", `${page}`);
+            dispatch(uiActions.updateSearchParams({
+                page: `${page}`,
+            }));
             return searchParams;
         });
     }
@@ -54,6 +81,9 @@ export const UsersSummary = () => {
         }
         setSearchParams(searchParams => {
             searchParams.set("page", `${page}`);
+            dispatch(uiActions.updateSearchParams({
+                page: `${page}`,
+            }));
             return searchParams;
         });
     }
@@ -62,7 +92,12 @@ export const UsersSummary = () => {
     useEffect(() => {
         const loadPage = async () => {
             if (currentPage) {
-                const data = await loader(currentPage, searchTerm);
+                const data = await loader(
+                    currentPage,
+                    searchTerm,
+                    currentOrder,
+                    currentSortBy
+                );
                 if (data) {
                     setUsers(data.users);
                     setTotalPages(data.totalPages);
@@ -72,10 +107,10 @@ export const UsersSummary = () => {
 
         loadPage();
 
-    }, [currentPage, searchTerm]);
+    }, [currentPage, searchTerm, currentOrder, currentSortBy]);
 
     const handleSearchBarChange = async (searchTerm: string) => {
-        const usersResponseData = await loader('1', searchTerm);
+        const usersResponseData = await loader('1', searchTerm, currentOrder, currentSortBy);
         if (usersResponseData) {
             return usersResponseData.users;
         }
@@ -90,7 +125,34 @@ export const UsersSummary = () => {
         setSearchParams({
             searchTerm
         });
-    } 
+        dispatch(uiActions.updateSearchParams({
+            searchTerm,
+        }));
+    }
+
+    const handleSortItems = (fieldName: SortType) => {
+        let order: 'asc' | 'desc' = 'asc';
+        if (fieldName === currentSortBy) {
+            if (currentOrder === 'desc' || currentOrder === '') {
+                order = 'asc';
+            } else {
+                order = 'desc';
+            }
+        } else {
+            order = 'asc';
+        }
+        setSearchParams(searchParams => {
+            searchParams.set("page", `${1}`);
+            searchParams.set("sortBy", fieldName);
+            searchParams.set("order", order);
+            dispatch(uiActions.updateSearchParams({
+                page: '1',
+                sortBy: fieldName,
+                order: order,
+            }));
+            return searchParams;
+        });
+    }
 
 
     return (
@@ -98,13 +160,14 @@ export const UsersSummary = () => {
             <SearchBarPortal
                 debounce={500}
                 onChange={handleSearchBarChange}
+                users={users}
                 onSearchText={handleSearchText}
                 onItemSelect={handleSearchItemSelect} />,
             <UsersTable
                 currentPageData={users}
                 currenPage={currentPage ? +currentPage : 1}
                 totalPage={totalPages}
-                sortItems={(cl) => { }}
+                sortItems={handleSortItems}
                 loadPage={(page) => setSearchParams({ page: `${page}` })}
                 loadPrevPage={loadPreviousPage}
                 loadNextPage={loadNextPage}

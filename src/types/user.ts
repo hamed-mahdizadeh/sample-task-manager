@@ -26,3 +26,7 @@ export interface UsersSummaryResponseData {
     users: UserInfoSummary[],
     totalPages: number;
 }
+
+export type Order = 'asc' | 'desc' | '';
+
+export type SortType = 'name' | 'age';

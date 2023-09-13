@@ -3,6 +3,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { Theme } from '../../types/ui';
+import { useAppSelector } from '../../hooks/useStore';
+import { useCreateUserSummaryUrl } from '../../hooks/useCreateUserSummaryUrl';
 
 const StyledNavbarUl = styled.ul`
     display: flex;
@@ -41,6 +43,11 @@ const StyledNavLink = styled(NavLink) <{ theme: Theme }>`
 
 export const Navbar = () => {
 
+    const searchParams = useCreateUserSummaryUrl();
+
+    const userSummaryUrl = `/users-summary/${searchParams}`; 
+    
+
     return (
         <StyledNav>
             <StyledNavbarUl>
@@ -50,7 +57,7 @@ export const Navbar = () => {
                     </StyledNavLink>
                 </li>
                 <li>
-                    <StyledNavLink to="/users-summary" title='Users Summary'>
+                    <StyledNavLink to={userSummaryUrl} title='Users Summary'>
                         Users Summary
                     </StyledNavLink>
                 </li>

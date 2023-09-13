@@ -5,11 +5,12 @@ import { SearchResultItem } from "./SearchResultItem";
 import styled from "styled-components";
 import SearchIcon from '@mui/icons-material/Search';
 
-export type SearchBarType = ({ onChange, onItemSelect, debounce = 500 }:
+export type SearchBarType = ({ onChange, onItemSelect, users, debounce = 500 }:
     {
         onChange: (searchTerm: string) => Promise<UserInfoSummary[]>,
         onItemSelect: (item: UserInfoSummary) => any,
         onSearchText: (searchTerm: string) => void,
+        users: UserInfoSummary[],
         debounce: number
     }) => React.JSX.Element;
 
@@ -27,16 +28,14 @@ color: #555;
 padding: .5rem;
 `;
 
-export const SearchBar: SearchBarType = ({ onChange, onItemSelect, onSearchText, debounce = 500 }) => {
+export const SearchBar: SearchBarType = ({ onChange, onItemSelect, onSearchText, users, debounce = 500 }) => {
 
     const [searchTerm, setSearchTerm] = useState('');
-    const [results, setResults] = useState<UserInfoSummary[]>([])
 
     useEffect(() => {
         const timeoutIdentifier = setTimeout(async () => {
             if (searchTerm) {
-                const data = await onChange(searchTerm);
-                setResults(data);
+                await onChange(searchTerm);
             }
         }, debounce);
         return () => clearTimeout(timeoutIdentifier);
@@ -59,7 +58,7 @@ export const SearchBar: SearchBarType = ({ onChange, onItemSelect, onSearchText,
     return (
         <StyledSearchBarContainerDiv>
             <Autocomplete
-                options={results}
+                options={users}
                 getOptionLabel={(option) => option.firstName}
                 filterOptions={(options, state) => options}
                 size="small"

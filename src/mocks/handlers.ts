@@ -33,8 +33,16 @@ export const usersHandler = rest.get('/users/page/:pageNumber', async (req, res,
       const orderType = order ?? 'asc';
   
       if (sortBy === 'age') {
-        users = users.sort((a, b) => (a.age - b.age));
-      } else if (sortBy === 'firstName') {
+        users = users.sort(
+          (a, b) => {
+              if(order === 'asc') {
+                return a.age - b.age;
+              } else {
+                return b.age - a.age;
+              }
+          }
+          );
+      } else if (sortBy === 'name') {
         users = users.sort((a, b) => {
           if (a.firstName === b.firstName) {
             return 0;

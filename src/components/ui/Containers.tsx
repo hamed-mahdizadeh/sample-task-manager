@@ -95,3 +95,11 @@ export const StyledSelectContainer = styled.div`
     max-height: 5rem;
     padding: 20px;
 `;
+
+export const StyledArrowContainer = styled.div`
+    display: inline-block;
+    width: 2rem;
+    height: 1rem;
+    overflow: hidden;
+    margin-right: -2rem;
+`;

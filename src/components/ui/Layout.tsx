@@ -12,7 +12,7 @@ const StyledLayoutContainer = styled.div<{ theme: Theme }>`
     background-color: ${props => props.theme.tertiaryBackground};
     color: ${props => props.theme.main};
     min-height: 100vh;
-    min-width: 350;
+    min-width: 350px;
     margin: 0;
 `
 

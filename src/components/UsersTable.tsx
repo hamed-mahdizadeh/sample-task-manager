@@ -1,10 +1,18 @@
 import { UserInfoSummary } from '../types/user';
-import { StyledContainerDiv, StyledNavLink, StyledPaginationContainerDiv, StyledTableHeaderRowDiv, StyledTableRowDiv } from './ui/Table';
+import {
+    StyledContainerDiv,
+    StyledNavLink,
+    StyledPaginationContainerDiv,
+    StyledTableHeaderRowDiv,
+    StyledTableRowDiv
+} from './ui/Table';
 import { StyledPaginationButton } from './ui/StyledElements/Buttons';
 import { CustomSelect, CustomSelectItem } from './ui/CustomSelect';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { useAppSelector } from '../hooks/useStore';
-import { StyledSelectContainer } from './ui/Containers';
+import { StyledArrowContainer, StyledSelectContainer } from './ui/Containers';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 
 const UsersTable = (
@@ -24,10 +32,11 @@ const UsersTable = (
             loadPage: (pageNumber: number) => void,
             loadNextPage: () => void,
             loadPrevPage: () => void
-            sortItems: (column: 'age' | 'name') => void
+            sortItems: (column: 'age' | 'name') => void,
         }) => {
 
     const theme = useAppSelector(state => state.ui.theme);
+    const searchParams = useAppSelector(state => state.ui.searchParams);
 
     const handlePageSelect = (event: SelectChangeEvent<number>): void => {
         loadPage(+event.target.value)
@@ -59,20 +68,30 @@ const UsersTable = (
                     }
                 </CustomSelect>
             </StyledSelectContainer>
-        </div>
+        </div>;
     return (
         <StyledContainerDiv>
             <StyledTableHeaderRowDiv>
-                <div onClick={() => sortItems('name')}>First Name</div>
+                <div onClick={() => sortItems('name')}>
+                        First Name
+                    <StyledArrowContainer>
+                        {searchParams.order === 'asc' && searchParams.sortBy === 'name' && <KeyboardArrowDownIcon />}
+                        {searchParams.order === 'desc' && searchParams.sortBy === 'name' && <KeyboardArrowUpIcon />}
+                    </StyledArrowContainer>
+                </div>
                 <div>Email</div>
-                <div onClick={() => sortItems('age')}>Age</div>
+                <div onClick={() => sortItems('age')}>
+                    Age
+                    <StyledArrowContainer>
+                        {searchParams.order === 'asc' && searchParams.sortBy === 'age' && <KeyboardArrowDownIcon />}
+                        {searchParams.order === 'desc' && searchParams.sortBy === 'age' && <KeyboardArrowUpIcon />}
+                    </StyledArrowContainer>
+                </div>
                 <div>Actions</div>
             </StyledTableHeaderRowDiv>
             {rows}
             <StyledPaginationContainerDiv>{pagesController}</StyledPaginationContainerDiv>
         </StyledContainerDiv>
-
-
     );
 };
 
