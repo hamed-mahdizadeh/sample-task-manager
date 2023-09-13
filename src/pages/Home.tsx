@@ -5,11 +5,6 @@ import { addUpdateTasks, deleteTask, getTasks } from '../api/tasksApi';
 import { StyledColumnDiv, StyledHomeContainerDiv } from '../components/ui/Containers';
 
 
-
-
-
-
-
 export const Home = () => {
 
     const [tasks, setTasks] = useState<Task[]>([]);

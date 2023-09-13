@@ -48,7 +48,7 @@ export const TextAreaField = (props: InputHTMLAttributes<HTMLTextAreaElement> & 
     return (
         <StyledFieldContainer basis={props.basis}> 
             <label htmlFor={props.name}>{props.title}:</label>
-            <StyledTextAreaField  {...props}/>
+            <StyledTextAreaField id={props.name}  {...props}/>
         </StyledFieldContainer>
     );
 }
@@ -58,7 +58,7 @@ export const InputField = (props: InputHTMLAttributes<HTMLInputElement> & {basis
     return (
         <StyledFieldContainer basis={props.basis}> 
             <label htmlFor={props.name}>{props.title}:</label>
-            <StyledInputField  {...props}/>
+            <StyledInputField id={props.name} {...props}/>
         </StyledFieldContainer>
     );
 }

@@ -51,10 +51,10 @@ const router = createBrowserRouter([
 ]);
 
 
-if (process.env.NODE_ENV === 'development') {
+//if (process.env.NODE_ENV === 'development') {
   const { worker } = require('./mocks/browser');
   worker.start()
-}
+//}
 
 
 const root = ReactDOM.createRoot(

@@ -59,14 +59,11 @@ export const UsersSummary = () => {
         if (currentPage) {
             page = +currentPage;
         }
-        if (page > 0) {
+        if (page > 1) {
             page -= 1;
         }
         setSearchParams(searchParams => {
             searchParams.set("page", `${page}`);
-            dispatch(uiActions.updateSearchParams({
-                page: `${page}`,
-            }));
             return searchParams;
         });
     }
@@ -81,9 +78,6 @@ export const UsersSummary = () => {
         }
         setSearchParams(searchParams => {
             searchParams.set("page", `${page}`);
-            dispatch(uiActions.updateSearchParams({
-                page: `${page}`,
-            }));
             return searchParams;
         });
     }
@@ -105,6 +99,13 @@ export const UsersSummary = () => {
             }
         }
 
+        dispatch(uiActions.updateSearchParams({
+            order: currentOrder,
+            searchTerm: searchTerm,
+            sortBy: currentSortBy,
+            page: currentPage
+        }));
+
         loadPage();
 
     }, [currentPage, searchTerm, currentOrder, currentSortBy]);
@@ -125,9 +126,13 @@ export const UsersSummary = () => {
         setSearchParams({
             searchTerm
         });
-        dispatch(uiActions.updateSearchParams({
-            searchTerm,
-        }));
+    }
+
+    const goToPage = (page: number) => {
+        setSearchParams(searchParams => {
+            searchParams.set('page', `${page}`);
+            return searchParams;
+        });
     }
 
     const handleSortItems = (fieldName: SortType) => {
@@ -145,11 +150,6 @@ export const UsersSummary = () => {
             searchParams.set("page", `${1}`);
             searchParams.set("sortBy", fieldName);
             searchParams.set("order", order);
-            dispatch(uiActions.updateSearchParams({
-                page: '1',
-                sortBy: fieldName,
-                order: order,
-            }));
             return searchParams;
         });
     }
@@ -168,7 +168,7 @@ export const UsersSummary = () => {
                 currenPage={currentPage ? +currentPage : 1}
                 totalPage={totalPages}
                 sortItems={handleSortItems}
-                loadPage={(page) => setSearchParams({ page: `${page}` })}
+                loadPage={goToPage}
                 loadPrevPage={loadPreviousPage}
                 loadNextPage={loadNextPage}
             />
