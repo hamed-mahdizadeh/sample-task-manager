@@ -1,0 +1,30 @@
+[
+    {
+        "id": "1",
+        "title": "Normal title 1",
+        "description": "This is description for task. This task is hard coded in json",
+        "reporter": "Julian",
+        "assignee": "Alex"
+    },
+    {
+        "id": "2",
+        "title": "Normal title 2",
+        "description": "This is description for task. This task is hard coded in json",
+        "reporter": "Julian",
+        "assignee": "Alex"
+    },
+    {
+        "id": "3",
+        "title": "Normal title 3",
+        "description": "This is description for task. This task is hard coded in json",
+        "reporter": "Julian",
+        "assignee": "Alex"
+    },
+    {
+        "id": "4",
+        "title": "Normal title 4",
+        "description": "This is description for task. This task is hard coded in json",
+        "reporter": "Julian",
+        "assignee": "Alex"
+    }
+]
