@@ -1,46 +1,30 @@
-# Getting Started with Create React App
+#### Project is started with create react app and hse been ejected
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### npm start, npm build and other create react app command are available
+#### webpack-bundle-analyzer has been added to the project and report of bundle is available by running the broject 
 
-## Available Scripts
+#### For routing react router dom is used and in final refactor fetching data (side effects) and updating state logic are moved to related stor slice
 
-In the project directory, you can run:
+## For mocking APIs Muck Service Worker is used. Please use your browser in private mode if you faced issue with muck apis or remove service worker from your dev consoles.
 
-### `npm start`
+#### For Debuging and analyzing the app, performance and accessibility I used react developer tools, Redux developer tools and chrome dev console and Light house but because of time limit and lot of details in the project I coudn't complete all improvements
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+#### For state management I've used redux-toolkit becuase of improving developement speed and data Immutability and using Immer
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#### Main page components and nested modules and component are lazy loaded inside react router
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### App includes three main page and route:
 
-### `npm run build`
+- ### Home
+- ### Users Summary
+- ### User Details
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### In Home page you can Add,Edit,Remove tasks and view tasks list
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### In User Summary you can search for users in autocomplete and by Pressing Enter inside input or clicking on search icon filtered results will be available on table.
+### search term, page number, order, and sort field are added to browser address bar for ability to bookmark and using direct address or browser navigation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### search params also are saved to store for keeping search params when using application navigation bar.
+-
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
