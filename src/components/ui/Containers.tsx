@@ -88,3 +88,10 @@ export const StyledTaskCardRow = styled.div`
   white-space: nowrap;
   padding: .2rem;
 `;
+
+
+export const StyledSelectContainer = styled.div`
+    display: inline-flex;
+    max-height: 5rem;
+    padding: 20px;
+`;

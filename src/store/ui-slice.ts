@@ -1,15 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
+import dark from "../theme/dark";
+import { Theme } from "../types/ui";
+import light from "../theme/light";
 
 const initialState = {
-    theme: 'dark',
+    theme: dark,
 };
 
 const uiSlice = createSlice({
     name: 'ui',
     initialState,
     reducers: {
-        changeTheme(state, action: {payload: 'dark' | 'light'}){
-            state.theme = action.payload;
+        switchTheme(state){
+            if(state.theme.name === 'dark') {
+                state.theme = light;
+            } else {
+                state.theme = dark;
+            }
         },
     }
 });

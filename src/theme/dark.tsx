@@ -1,6 +1,7 @@
 import { Theme } from "../types/ui";
 
 const  dark: Theme = {
+    name: 'dark',
     main: '#ffffff',
     secondary: '#b5b5b5',
     background: '#000000',

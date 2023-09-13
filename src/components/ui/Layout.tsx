@@ -3,8 +3,6 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Navbar } from './Navbar';
 import styled, { ThemeProvider } from 'styled-components';
-import dark from '../../theme/dark';
-import light from '../../theme/light';
 import { Theme } from '../../types/ui';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useAppDispatch, useAppSelector } from '../../hooks/useStore';
@@ -14,7 +12,7 @@ const StyledLayoutContainer = styled.div<{ theme: Theme }>`
     background-color: ${props => props.theme.tertiaryBackground};
     color: ${props => props.theme.main};
     min-height: 100vh;
-    min-width: 400px;
+    min-width: 350;
     margin: 0;
 `
 
@@ -56,27 +54,23 @@ const StyledDarkModeIcon = styled(DarkModeIcon)<{theme: Theme}>`
 
 const Layout = () => {
 
-    const themeName = useAppSelector(state => state.ui.theme);
-    const currentTheme = themeName === 'dark' ? dark : light;
+    const theme = useAppSelector(state => state.ui.theme);
     const dispatch = useAppDispatch();
 
     const handleDarkModeClick = () => {
-
-        const newTheme = themeName === 'dark' ? 'light' : 'dark';
-
-        dispatch(uiActions.changeTheme(newTheme))
+        dispatch(uiActions.switchTheme());
     }
 
 
 
     return (
-        <ThemeProvider theme={currentTheme}>
+        <ThemeProvider theme={theme}>
             <StyledLayoutContainer>
                 <StyledHeaderContainerDiv>
                     <Navbar />
                     <StyledSearchPlaceHolderDiv id="headerPlaceHolder"></StyledSearchPlaceHolderDiv>
                     <StyledDarkModeIcon
-                     className={themeName} role='button'
+                     className={theme.name} role='button'
                      onClick={handleDarkModeClick}
                     />
                 </StyledHeaderContainerDiv>

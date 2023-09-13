@@ -1,7 +1,10 @@
 import { UserInfoSummary } from '../types/user';
 import { StyledContainerDiv, StyledNavLink, StyledPaginationContainerDiv, StyledTableHeaderRowDiv, StyledTableRowDiv } from './ui/Table';
 import { StyledPaginationButton } from './ui/StyledElements/Buttons';
-
+import { CustomSelect, CustomSelectItem } from './ui/CustomSelect';
+import { SelectChangeEvent } from '@mui/material/Select';
+import { useAppSelector } from '../hooks/useStore';
+import { StyledSelectContainer } from './ui/Containers';
 
 
 const UsersTable = (
@@ -24,6 +27,12 @@ const UsersTable = (
             sortItems: (column: 'age' | 'name') => void
         }) => {
 
+    const theme = useAppSelector(state => state.ui.theme);
+
+    const handlePageSelect = (event: SelectChangeEvent<number>): void => {
+        loadPage(+event.target.value)
+    }
+
     const rows = currentPageData.map((user) =>
         <StyledTableRowDiv key={user.id}>
             <div>
@@ -37,10 +46,20 @@ const UsersTable = (
             <div>Actions</div>
         </StyledTableRowDiv>
     );
-    const pagesController = <div>
-        <StyledPaginationButton type='button' title='Previous Page' onClick={loadPrevPage}>{'<'}</StyledPaginationButton>
-        <StyledPaginationButton type='button' title='Next Page' onClick={loadNextPage}>{'>'}</StyledPaginationButton>
-    </div>
+    const pagesController =
+        <div>
+            <StyledPaginationButton type='button' title='Previous Page' onClick={loadPrevPage}>{'<'}</StyledPaginationButton>
+            <StyledPaginationButton type='button' title='Next Page' onClick={loadNextPage}>{'>'}</StyledPaginationButton>
+            <StyledSelectContainer>
+                <CustomSelect theme={theme} onChange={handlePageSelect} value={currenPage}>
+                    {
+                        Array.from(Array(totalPage)).map((_, index) => {
+                            return <CustomSelectItem theme={theme} key={index + 1} value={index + 1}>{index + 1}</CustomSelectItem>
+                        })
+                    }
+                </CustomSelect>
+            </StyledSelectContainer>
+        </div>
     return (
         <StyledContainerDiv>
             <StyledTableHeaderRowDiv>

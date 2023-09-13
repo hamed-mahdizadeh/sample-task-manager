@@ -1,6 +1,7 @@
 import { Theme } from "../types/ui";
 
 const light: Theme = {
+    name: 'light',
     main: '#000000',
     secondary: '#707070',
     background: '#ffffff',
