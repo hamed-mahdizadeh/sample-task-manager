@@ -1,84 +1,32 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Task } from "../types/task";
+import { ChangeEvent, useEffect, useState } from "react";
 
-import { ButtonContainer, StyledHeaderTitleDiv, StyledSubContainerDiv, StyledTaskCardRow, StyledTaskContainerDiv } from "./ui/Containers";
+import { ButtonContainer, StyledHeaderTitleDiv, StyledSubContainerDiv} from "./ui/Containers";
 import { InputField, TextAreaField } from "./ui/InfoField";
 
 import Button from '@mui/material/Button';
-import { StyledTableHeaderRowDiv } from "./ui/Table";
 
-const initialTaskData = (): Task => ({
-    description: '',
-    id: '',
-    state: '',
-    title: '',
-    assignee: '',
-    reporter: ''
-});
+import { useAppDispatch, useAppSelector } from "../hooks/useStore";
+import { tasksActions } from "../store/tasks-slice";
 
 
-export const TaskCard = ({
-    task,
-    onEditClick,
-    onDeleteClick }:
-    {
-        task: Task,
-        onEditClick: (task: Task) => any,
-        onDeleteClick: (id: string) => any
-    }) => {
-    return (
-        <StyledTaskContainerDiv>
-            <StyledTableHeaderRowDiv>
-                {task.title}
-            </StyledTableHeaderRowDiv>
-            <div>Description:</div>
-            <StyledTaskCardRow>{task.description}</StyledTaskCardRow>
-            <div>Reporter:</div>
-            <StyledTaskCardRow>{task.reporter}</StyledTaskCardRow>
-            <div>Assignee:</div>
-            <StyledTaskCardRow>{task.assignee}</StyledTaskCardRow>
-            <ButtonContainer>
-                <Button variant="contained" color="warning" onClick={() => onDeleteClick(task.id)}>
-                    Delete
-                </Button>
-                <Button variant="contained" color="info" onClick={() => onEditClick(task)}>
-                    Edit
-                </Button>
-            </ButtonContainer>
-        </StyledTaskContainerDiv>
-    )
-}
+export const TaskPanel = () => {
 
-export const TaskPanel = (
-    {
-        onAddUpdateTask,
-        onCancelEdit,
-        task
-    }:
-        {
-            onAddUpdateTask: (tasks: Task) => Promise<boolean>,
-            onCancelEdit: () => void,
-            task?: Task
-        }) => {
+    const dispatch = useAppDispatch();
 
-    const [taskData, setTaskData] = useState<Task>(initialTaskData());
-
+    const target = useAppSelector(state => state.tasks.selectedTask);
+   
     useEffect(() => {
-        if (task) {
-            setTaskData({
-                ...task
-            });
-        } else {
-            setTaskData(initialTaskData());
-        }
-    }, [task]);
+        setTaskData({...target});
+    }, [target]);
 
-    const handleSubmit = async (event: FormEvent) => {
-        event.preventDefault();
-        const isDone = await onAddUpdateTask(taskData);
-        if (isDone) {
-            setTaskData(initialTaskData());
-        }
+    const [taskData, setTaskData] = useState({ ...target });
+
+    const handleCancelUpdate = () => {
+        dispatch(tasksActions.resetTargetTask());
+    }
+
+    const handleSubmit = () => {
+        dispatch(tasksActions.addUpdateAndSyncTask(taskData))
     }
 
     const handleFieldChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -88,11 +36,6 @@ export const TaskPanel = (
                 [event.target.name]: event.target.value
             }
         });
-    }
-
-    const handleCancelEdit = () => {
-        setTaskData(initialTaskData());
-        onCancelEdit();
     }
 
     return (
@@ -134,12 +77,12 @@ export const TaskPanel = (
                     <Button
                         variant="contained"
                         type="submit"
-                        onClick={handleCancelEdit}>Cancel
+                        onClick={handleCancelUpdate}>Cancel
                     </Button>
                     <Button
                         variant="contained"
                         color="success"
-                        type="submit">{task ? 'Update' : 'Add'}
+                        type="submit">{taskData.id ? 'Update' : 'Add'}
                     </Button>
                 </ButtonContainer>
 

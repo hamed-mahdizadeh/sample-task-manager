@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Order, SortType, UserInfoSummary, UsersSummaryResponseData } from '../types/user';
@@ -41,7 +41,7 @@ export const loader = async (
     //TODO handle response not OK or Exceptions
 }
 
-export const UsersSummary = () => {
+export const UsersSummary = memo(() => {
     const [users, setUsers] = useState<UserInfoSummary[]>([]);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [searchParams, setSearchParams] = useSearchParams();
@@ -174,4 +174,4 @@ export const UsersSummary = () => {
             />
         </>
     );
-};
+});

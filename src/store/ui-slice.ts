@@ -3,7 +3,7 @@ import dark from "../theme/dark";
 import light from "../theme/light";
 import { Theme } from "../types/ui";
 
-export interface AppState {
+export interface UISlice {
     theme: Theme,
     searchParams: SearchParam
 }
@@ -15,7 +15,7 @@ export interface SearchParam {
         sortBy: 'name' | 'age' | ''
 }
 
-const initialState: AppState = {
+const initialState: UISlice = {
     theme: dark,
     searchParams: {
         page: '',
